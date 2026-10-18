@@ -1144,7 +1144,3 @@ chmod +x /root/soal20_log.sh
 3. **Screenshot Hasil Analisis Access Log & Error Log di Gojo:**
    ![Output Analisis Log Access dan Error pada Gojo](images/soal20_gojo_log_analysis.png)
 
-**Kesimpulan Analisis Audit:**
-1. **Efektivitas Proxy Caching (`/`):** Seluruh 600 request diselesaikan dalam waktu `0.100 detik` dengan RPS mencapai `6010.04 req/detik` dan `0` kegagalan karena dilayani langsung dari memori cache Gojo (`X-Cache-Status: HIT`).
-2. **Efektivitas Rate Limiting (`/api`):** Dalam waktu pengujian `0.110 detik`, kebijakan `rate=10r/s` mengizinkan tepat **2 request** lolos ke backend API (`200 OK`) dan menahan **598 request** sisanya dengan status `429 Too Many Requests` (`Non-2xx responses: 598`).
-3. **Verifikasi Log Gojo:** Tidak ditemukan kode `500`, `502`, atau `504` pada `access.log`, yang membuktikan bahwa `Failed requests: 598 (Length: 598)` pada laporan `ab` bukan disebabkan oleh kegagalan koneksi atau aplikasi backend yang tumbang (`Connect: 0, Receive: 0`), melainkan karena perbedaan ukuran panjang byte respons `429` dari 598 request yang ditolak oleh zona `API_LIMIT` (terkonfirmasi identik sebanyak `617` kejadian pada `access.log` dan `error.log`).
